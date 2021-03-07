@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: json-dataviz
+spec:
+  selector:
+    matchLabels:
+      app: json-dataviz
+  replicas: {{ .Values.api.replicaCount }}
+  template:
+    metadata:
+      labels:
+        app: json-dataviz
+    spec:
+      volumes:
+      - name: shared-data
+        emptyDir: {}
+      containers:
+      - name: front
+        image: "{{ .Values.front.image }}:{{ .Values.front.tag }}"
+        imagePullPolicy: {{ .Values.pullPolicy }}
+        volumeMounts:
+        - name: shared-data
+          mountPath: /app-data
+        env:
+        - name: JSON_DATAVIZ_DATABASE_FILE
+          value: "/app-data/database.json"
+        {{- if .Values.title }}
+        - name: JSON_DATAVIZ_REPORT_TITLE
+          value: "{{ .Values.title }}"
+        {{- end }}
+        {{- if .Values.filterHints }}
+        - name: JSON_DATAVIZ_FILTER_HINTS
+          value: "{{ .Values.filterHints }}"
+        {{- end }}
+        {{- if .Values.filter }}
+        - name: JSON_DATAVIZ_DEFAULT_FILTER
+          value: "{{ .Values.filter }}"
+        {{- end }}
+        {{- if .Values.xLabel }}
+        - name: JSON_DATAVIZ_XAXIS_TITLE
+          value: {{ .Values.xLabel }}
+        {{- end }}
+        {{- if .Values.yLabel }}
+        - name: JSON_DATAVIZ_YAXIS_TITLE
+          value: "{{ .Values.yLabel }}"
+        {{- end }}
+      - name: api
+        image: "{{ .Values.api.image }}:{{ .Values.api.tag }}"
+        imagePullPolicy: {{ .Values.pullPolicy }}
+        volumeMounts:
+        - name: shared-data
+          mountPath: /app-data
+        env:
+        - name: JSON_DATAVIZ_DATABASE_FILE
+          value: "/app-data/database.json"

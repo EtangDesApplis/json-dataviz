@@ -1,0 +1,6 @@
+FROM python:3.8.0-alpine
+RUN pip install flask flask_cors
+WORKDIR /app
+COPY main.py /app/main.py
+EXPOSE 5000
+CMD ["python", "-u", "main.py"]

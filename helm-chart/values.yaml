@@ -1,0 +1,21 @@
+pullPolicy: Always
+
+front:
+  image: etangdesapplis/json-dataviz
+  tag: "0.0.1"
+  replicaCount: 1
+
+api:
+  image: etangdesapplis/json-dataviz-api
+  tag: "0.0.1"
+  replicaCount: 1
+#ingress
+baseURL: ""
+#customization
+title: ""
+filterHints: ""
+filter: ""
+xLabel: ""
+yLabel: ""
+
+
