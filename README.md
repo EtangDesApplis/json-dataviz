@@ -64,7 +64,9 @@ Dash reference: https://dash.plotly.com/dash-core-components/input
 
 
 ## deployment with helm
-helm install 
+helm install json-dataviz helm-chart --set filter='\w+'
+
+helm install json-dataviz helm-chart --set front.tag=0.0.1-arm64 --set api.tag=0.0.1-arm64 --set filter='\w+' --set baseURL="localhost.com"
 
 ## CUSTOMIZATION
 

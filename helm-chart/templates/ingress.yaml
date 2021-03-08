@@ -1,2 +1,24 @@
 {{- if .Values.baseURL }}
+apiVersion: extension/v1beta1
+kind: Ingress
+metadata:
+  name: json-dataviz-ingress
+spec:
+  rules:
+  - host: {{ .Release.Name }}-api.{{ .Values.baseURL }}
+    http:
+      paths:
+      - backend:
+          serviceName: json-dataviz-api
+          servicePort: 5000
+        path: /
+        pathType: ImplementationSpecific
+  - host: {{ .Release.Name }}.{{ .Values.baseURL }}
+    http:
+      paths:
+      - backend:
+          serviceName: json-dataviz-api
+          servicePort: 8080
+        path: /
+        pathType: ImplementationSpecific
 {{- end }}
